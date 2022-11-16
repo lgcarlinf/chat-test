@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- CSS only -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
+      crossorigin="anonymous"
+    />
+    <title>MiniChat</title>
+  </head>
+  <body class="container">
+    <h1 class="mt-5">MiniChat</h1>
+    <hr />
+
+    <form class="form" id="myForm">
+      <div class="row">
+        <div class="col-8">
+          <input
+            type="text"
+            id="txtMensaje"
+            placeholder="Mensaje"
+            class="form-control"
+          />
+        </div>
+        <div class="col-4">
+          <button type="submit" class="primary btn btn-primary">Enviar</button>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <ul id="misMensajes" class="mt-2"></ul>
+        </div>
+      </div>
+    </form>
+
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.3/socket.io.js"
+      integrity="sha512-iWPnCISAd/J+ZacwV2mbNLCaPGRrRo5OS81lKTVPtRg1wGTC20Cfmp5Us5RcbLv42QLdbAWl0MI57yox5VecQg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script>
+      const socket = io("http://localhost:8080");
+      const form = document.getElementById("myForm");
+      const mensajes = document.getElementById("misMensajes");
+      const txtMensaje = document.getElementById("txtMensaje");
+
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const nuevoMensaje = txtMensaje.value;
+
+        txtMensaje.value = "";
+
+        socket.emit("mensaje-to-server", {
+          text: nuevoMensaje,
+        });
+      });
+
+      socket.on("mensaje-from-server", (data) => {
+        mensajes.innerHTML += `<li>${data.text}</li>`;
+      });
+      /* socket.on('mensaje-bienvenida',(data)=>{
+            console.log('%c elserver emitio algo :', 'background-color:#048A81', data);
+        }) */
+
+      /* setTimeout(()=>{
+            socket.emit('cliente',{
+            msg:'Hola Mi nombre es luiggy',
+            fecha: new Date()
+            })
+        },2000) */
+    </script>
+  </body>
+</html>
