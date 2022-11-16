@@ -8,7 +8,7 @@ const Sockets = require("./sockets");
 class Server {
   constructor() {
     this.app = express();
-    this.port = process.env.PORT;
+    this.port = process.env.PORT || 4000;
 
     //Http Server
     this.server = http.createServer(this.app);
@@ -32,8 +32,8 @@ class Server {
     //Inicializar midlewares
     this.middlewares();
     this.configurarSockets();
-    this.server.listen(this.port, () => {
-      console.log(`Server corriendo en : ${this.port}`);
+    this.server.listen(this.port || 4000, () => {
+      console.log(`Server corriendo en : ${this.port || 4000}`);
     });
   }
 }
