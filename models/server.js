@@ -18,7 +18,7 @@ class Server {
   }
 
   middlewares() {
-    this.app.get("/", (req, res) => {
+    this.app.use("/", (req, res) => {
       res.sendFile(path.resolve(__dirname, "../public/index.html"));
     });
     this.app.use(cors());
